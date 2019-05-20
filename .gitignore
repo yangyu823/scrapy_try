@@ -52,3 +52,7 @@ fabric.properties
 # Editor-based Rest Client
 .idea/httpRequests
 
+.gitignore
+.idea/vcs.xml
+yyan/__pycache__/
+yyan/spiders/__pycache__/
