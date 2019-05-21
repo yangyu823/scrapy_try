@@ -14,7 +14,7 @@ requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 if not os.path.exists("meizi"):
     os.mkdir("meizi")
 
-for page in range(1, 2):
+for page in range(1, 887):
     url = 'http://www.mmonly.cc/mmtp/list_9_%s.html' % page
     print(url)
     response = requests.get(url, verify=False).text
