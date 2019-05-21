@@ -1,4 +1,12 @@
 import scrapy
 import os
+import time
 
-print(os.getcwd());
+
+start = time.time()
+
+print(os.getcwd())
+
+time.sleep(2)
+
+print(time.time() - start)

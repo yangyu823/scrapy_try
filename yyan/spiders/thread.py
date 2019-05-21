@@ -18,7 +18,7 @@ def fetch_url(url):
 
 start = timer()
 # Threading value |||| Below ||||
-results = ThreadPool(11).imap_unordered(fetch_url, urls)
+results = ThreadPool(10).imap_unordered(fetch_url, urls)
 for url, html, error in results:
     if error is None:
         print("%r fetched in %ss" % (url, timer() - start))
