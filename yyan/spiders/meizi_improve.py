@@ -5,7 +5,7 @@ import requests
 from lxml import html
 import time
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
-
+from tqdm import tqdm
 from multiprocessing.pool import ThreadPool
 
 # 禁用安全请求警告
@@ -14,9 +14,9 @@ requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 if not os.path.exists("meizi"):
     os.mkdir("meizi")
 
-for page in range(1, 887):
+for page in tqdm(range(1, 3), desc="Page count"):
     url = 'http://www.mmonly.cc/mmtp/list_9_%s.html' % page
-    print(url)
+    # print(url)
     response = requests.get(url, verify=False).text
 
     selector = html.fromstring(response)
@@ -29,7 +29,7 @@ for page in range(1, 887):
         response = requests.get(imgUrl, verify=False).text
         selector = html.fromstring(response)
         pageEle = selector.xpath('//div[@class="wrapper clearfix imgtitle"]/h1/span/span[2]/text()')[0]
-        print(pageEle)
+        # print(pageEle)
         total += int(pageEle)
         imgE = selector.xpath('//a[@class="down-btn"]/@href')[0]
         # print(imgE)
@@ -64,11 +64,11 @@ for page in range(1, 887):
 
 
         results = ThreadPool(5).imap_unordered(get_subIMG, temp)
-        for url, error in results:
-            if error is None:
-                print(" Image URL is ", url)
-            else:
-                print("error fetching")
+        # for url, error in results:
+        #     if error is None:
+        #         print(" Image URL is ", url)
+        #     else:
+        #         print("error fetching")
 
     time.sleep(2)
     print("Total Sum is %r" % (total,))
