@@ -17,7 +17,7 @@ requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 if not os.path.exists("meizi"):
     os.mkdir("meizi")
 
-for page in tqdm(range(1, 3), desc="Page count"):
+for page in tqdm(range(2, 3), desc="Page count"):
     url = 'http://www.mmonly.cc/mmtp/list_9_%s.html' % page
     # print(url)
     response = requests.get(url, verify=False).text
@@ -65,14 +65,14 @@ for page in tqdm(range(1, 3), desc="Page count"):
             except Exception as e:
                 return url, e
 
-        for i in tqdm(temp,desc="Folder"):
+        # for i in tqdm(temp,desc="Folder"):
             # try:
             #     _thread.start_new_thread(get_subIMG, i)
             # except Exception as e:
             #     print("Error:unable to start thread")
 
 
-        # results = ThreadPool(5).imap_unordered(get_subIMG, temp)
+        results = ThreadPool(5).imap_unordered(get_subIMG, temp)
         # for url, error in results:
         #     if error is None:
         #         print(" Image URL is ", url)
