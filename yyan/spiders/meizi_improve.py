@@ -8,6 +8,9 @@ from requests.packages.urllib3.exceptions import InsecureRequestWarning
 from tqdm import tqdm
 from multiprocessing.pool import ThreadPool
 
+#   Threading attempt
+import _thread
+
 # 禁用安全请求警告
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
@@ -29,7 +32,7 @@ for page in tqdm(range(1, 3), desc="Page count"):
         response = requests.get(imgUrl, verify=False).text
         selector = html.fromstring(response)
         pageEle = selector.xpath('//div[@class="wrapper clearfix imgtitle"]/h1/span/span[2]/text()')[0]
-        # print(pageEle)
+        print(pageEle)
         total += int(pageEle)
         imgE = selector.xpath('//a[@class="down-btn"]/@href')[0]
         # print(imgE)
@@ -52,7 +55,7 @@ for page in tqdm(range(1, 3), desc="Page count"):
                 selector = html.fromstring(response)
                 imgEle = selector.xpath('//a[@class="down-btn"]/@href')[0]
                 fileEle = selector.xpath('//div[@class="wrapper clearfix imgtitle"]/h1/span/span[1]/text()')[0]
-                # print(fileEle)
+                print(fileEle)
                 imgName = '%s_%s_%s.jpg' % (page, str(index + 1), fileEle)
                 coverPath = '%s/meizi/%s' % (os.getcwd(), imgName)
                 # Output (2nd ~ Rest) IMG to file
@@ -62,8 +65,14 @@ for page in tqdm(range(1, 3), desc="Page count"):
             except Exception as e:
                 return url, e
 
+        for i in tqdm(temp,desc="Folder"):
+            # try:
+            #     _thread.start_new_thread(get_subIMG, i)
+            # except Exception as e:
+            #     print("Error:unable to start thread")
 
-        results = ThreadPool(5).imap_unordered(get_subIMG, temp)
+
+        # results = ThreadPool(5).imap_unordered(get_subIMG, temp)
         # for url, error in results:
         #     if error is None:
         #         print(" Image URL is ", url)
