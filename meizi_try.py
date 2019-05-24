@@ -1,8 +1,4 @@
 # -*- coding: utf-8 -*-
-# @Time    : 2019/2/26 18:00
-# @Author  : Liangjianghao
-# @Email   : 1084933098@qq.com
-# @Software: PyCharm
 import os
 import urllib
 import requests
@@ -17,10 +13,8 @@ from tqdm import tqdm
 # 禁用安全请求警告
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
-
 if not os.path.exists("meizi"):
     os.mkdir("meizi")
-
 
 for page in range(1, 2):
     url = 'http://www.mmonly.cc/mmtp/list_9_%s.html' % page
@@ -29,8 +23,6 @@ for page in range(1, 2):
     selector = html.fromstring(response)
     imgEle = selector.xpath('//div[@class="ABox"]/a')
     # print(len(imgEle))
-
-    total = 0
     data = ((index, img.xpath('@href')) for index, img in enumerate(imgEle))
 
 
@@ -47,8 +39,8 @@ def getlink(data):
     # print(imgE)
     imgName = '%s_%s_1.jpg' % (page, str(index + 1))
     coverPath = '%s/meizi/%s' % (os.getcwd(), imgName)
-    imglink.update({imgName: imgE})
-    # print(imglink)
+    urllib.request.urlretrieve(imgE, coverPath)
+    # imglink.update({imgName: imgE})
 
     for page_2 in range(2, int(pageEle) + 1):
         url = imgUrl.replace('.html', '_%s.html' % str(page_2))
@@ -58,19 +50,17 @@ def getlink(data):
         # print(imgEle)
         imgName = '%s_%s_%s.jpg' % (page, str(index + 1), page_2)
         coverPath = '%s/meizi/%s' % (os.getcwd(), imgName)
-        imglink.update({imgName: imgEle})
+        urllib.request.urlretrieve(imgEle, coverPath)
+        # imglink.update({imgName: imgEle})
+    # print(imglink)
+    # return imglink
 
+# print(imglink)
 
-time.sleep(2)
-
-i = 0
-# with open("img.json", "w") as outfile:
-#     json.dump(imglink, outfile, indent=4, ensure_ascii=False)
 if __name__ == '__main__':
-    imglink={}
     with tqdm(total=len(imgEle)) as t:
-        for _ in Pool(2).imap_unordered(getlink, data):
+        for _ in Pool(20).imap_unordered(getlink, data):
             t.update(1)
-        print(imglink)
+        # print(imglink)
         # with open("img.json", "w") as outfile:
         #     json.dump(imglink, outfile, indent=4, ensure_ascii=False)
