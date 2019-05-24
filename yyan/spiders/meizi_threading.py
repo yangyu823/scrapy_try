@@ -23,7 +23,6 @@ for page in range(1, 2):
     url = 'http://www.mmonly.cc/mmtp/list_9_%s.html' % page
     # print(url)
     response = requests.get(url, verify=False).text
-
     selector = html.fromstring(response)
     imgEle = selector.xpath('//div[@class="ABox"]/a')
     # print(len(imgEle))

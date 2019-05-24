@@ -6,7 +6,6 @@ from time import time as timer
 from tqdm import tqdm
 # from multiprocessing.pool import ThreadPool
 from multiprocessing import Pool
-
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
