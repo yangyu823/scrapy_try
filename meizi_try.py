@@ -52,10 +52,6 @@ def getlink(data):
         coverPath = '%s/meizi/%s' % (os.getcwd(), imgName)
         urllib.request.urlretrieve(imgEle, coverPath)
         # imglink.update({imgName: imgEle})
-    # print(imglink)
-    # return imglink
-
-# print(imglink)
 
 if __name__ == '__main__':
     with tqdm(total=len(imgEle)) as t:
