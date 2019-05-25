@@ -3,10 +3,7 @@ import os
 import urllib
 import requests
 from lxml import html
-import time
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
-import _thread
-import json
 from multiprocessing import Pool
 from tqdm import tqdm
 
@@ -21,7 +18,6 @@ selector = html.fromstring(response)
 num = len(selector.xpath('//div[@id="pageNum"]/a'))
 imgEle = selector.xpath('//div[@id="pageNum"]/a[%r]/@href' % num)[0]
 totalPage = (((imgEle.split(".")[0]).split("_"))[-1])
-print(totalPage)
 
 for page in range(1, totalPage):
     url = 'http://www.mmonly.cc/mmtp/list_9_%s.html' % page
@@ -56,5 +52,5 @@ for page in range(1, totalPage):
 
     if __name__ == '__main__':
         with tqdm(total=len(imgEle), desc="Page %r MeiZi" % page) as t:
-            # for _ in Pool(20).imap_unordered(getlink, data):
-            t.update(1)
+            for _ in Pool(20).imap_unordered(getlink, data):
+                t.update(1)
