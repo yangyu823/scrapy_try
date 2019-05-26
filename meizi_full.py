@@ -19,7 +19,7 @@ num = len(selector.xpath('//div[@id="pageNum"]/a'))
 imgEle = selector.xpath('//div[@id="pageNum"]/a[%r]/@href' % num)[0]
 totalPage = (((imgEle.split(".")[0]).split("_"))[-1])
 
-for page in range(1, totalPage):
+for page in range(1, int(totalPage)):
     url = 'http://www.mmonly.cc/mmtp/list_9_%s.html' % page
     response = requests.get(url, verify=False).text
     selector = html.fromstring(response)
@@ -37,7 +37,7 @@ for page in range(1, totalPage):
         imgE = selector.xpath('//a[@class="down-btn"]/@href')[0]
         imgName = '%s_%s_1.jpg' % (page, str(index + 1))
         coverPath = '%s/meizi/%s' % (os.getcwd(), imgName)
-        urllib.request.urlretrieve(imgE, coverPath)  # imglink.update({imgName: imgE})
+        urllib.request.urlretrieve(imgE, coverPath)
 
         for page_2 in range(2, int(pageEle) + 1):
             url = imgUrl.replace('.html', '_%s.html' % str(page_2))
