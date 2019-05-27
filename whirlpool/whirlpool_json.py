@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
 
 import os
+import json
+import csv
+import time
 import urllib
 import requests
 from lxml import html
-import time
-from requests.packages.urllib3.exceptions import InsecureRequestWarning
-from multiprocessing.pool import ThreadPool
-import json
-import csv
 from tqdm import tqdm
+from multiprocessing.pool import ThreadPool
+from requests.packages.urllib3.exceptions import InsecureRequestWarning
 
 # 禁用安全请求警告
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
@@ -64,5 +64,3 @@ for page in tqdm(range(1000, 1500), desc="Data Store"):
         json.dump(ulist, outfile, indent=4, ensure_ascii=False)
     outfile.close()
     time.sleep(1.5)
-
-
