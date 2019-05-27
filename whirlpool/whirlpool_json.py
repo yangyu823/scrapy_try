@@ -21,7 +21,7 @@ ulist = []
 
 os.system("clear")
 
-for page in tqdm(range(1000, 1020), desc="Data Store"):
+for page in tqdm(range(1000, 1500), desc="Data Store"):
     url = 'https://forums.whirlpool.net.au/user/%s' % page
     # print(url)
     response = requests.get(url, timeout=5, headers=HEADERS).text
@@ -59,7 +59,10 @@ for page in tqdm(range(1000, 1020), desc="Data Store"):
         user.update({tagname: tagdata})
         i += 1
     ulist.append(user)
-    if(len(ulist) % 10 == 0):
-        with open('data.json', 'w') as outfile:
-            json.dump(ulist, outfile, indent=4, ensure_ascii=False)
-        outfile.close()
+
+    with open('data.json', 'w') as outfile:
+        json.dump(ulist, outfile, indent=4, ensure_ascii=False)
+    outfile.close()
+    time.sleep(1.5)
+
+

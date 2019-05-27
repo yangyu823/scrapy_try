@@ -21,7 +21,7 @@ ulist = []
 
 os.system("clear")
 
-for page in tqdm(range(1000, 5000), desc="Data Store"):
+for page in tqdm(range(1000, 1020), desc="Data Store"):
     url = 'https://forums.whirlpool.net.au/user/%s' % page
     # print(url)
     response = requests.get(url, timeout=5, headers=HEADERS).text
