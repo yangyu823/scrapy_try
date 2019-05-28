@@ -27,7 +27,7 @@ def test():
         for p in tqdm(tempList, desc='Clean Proxy List ...'):
             # print("Request #%s" % p)
             try:
-                response = requests.get(testUrl, timeout=3, proxies={"http": p, "https": p})
+                response = requests.get(testUrl, timeout=2, proxies={"http": p, "https": p})
                 # print(response.json())
             except:
                 # Most free proxies will often get connection errors. You will have retry the entire request using another proxy to work.
