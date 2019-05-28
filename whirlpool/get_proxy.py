@@ -1,3 +1,4 @@
+import json
 import requests
 from tqdm import tqdm
 from itertools import cycle
@@ -9,23 +10,36 @@ HEADERS = {
 
 txt = requests.get("https://proxy.rudnkh.me/txt").text
 tempList = (txt.split('\n')[:-1])
-testUrl = 'https://httpbin.org/ip'
+
+with open('list_initial.json') as origin:
+    initial = json.load(origin)
+    origin.close()
 
 
-def get_list():
-    for p in tqdm(tempList, desc='Clean Proxy List ...'):
-        # print("Request #%s" % p)
-        try:
-            response = requests.get(testUrl, timeout=10, proxies={"http": p, "https": p})
-            # print(response.json())
-        except:
-            # Most free proxies will often get connection errors. You will have retry the entire request using another proxy to work.
-            # We will just skip retries as its beyond the scope of this tutorial and we are only downloading a single url
-            tempList.remove(p)
-            # print("Skipping. Connnection error")
-    print("#####    Clean process finished. %d proxy is available to Use.   #####" % len(tempList))
-    return tempList
+def test():
+    if tempList[0] not in initial:
+        with open('list_initial.json', 'w') as infile:
+            json.dump(tempList, infile, indent=4, ensure_ascii=False)
+            infile.close()
+            print("###########    Update Source Proxy List")
+        testUrl = 'https://httpbin.org/ip'
 
+        for p in tqdm(tempList, desc='Clean Proxy List ...'):
+            # print("Request #%s" % p)
+            try:
+                response = requests.get(testUrl, timeout=3, proxies={"http": p, "https": p})
+                # print(response.json())
+            except:
+                # Most free proxies will often get connection errors. You will have retry the entire request using another proxy to work.
+                # We will just skip retries as its beyond the scope of this tutorial and we are only downloading a single url
+                tempList.remove(p)
+                # print("Skipping. Connnection error")
+        print("###########    Updated Usable Proxy List. %d proxy is available to Use." % len(tempList))
 
-if __name__ == '__main__':
-    get_list()
+        with open('list_final.json', 'w') as outfile:
+            json.dump(tempList, outfile, indent=4, ensure_ascii=False)
+            outfile.close()
+    else:
+        print("###########    Proxy list already up to date")
+        return
+

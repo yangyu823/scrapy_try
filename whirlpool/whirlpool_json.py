@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 import os
 import json
 import csv
@@ -18,10 +17,10 @@ HEADERS = {
     'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.87 Safari/537.36',
 }
 ulist = []
-
+index = 1050
 os.system("clear")
 
-for page in tqdm(range(1000, 1500), desc="Data Store"):
+for page in tqdm(range(1000, index), desc="Data Store"):
     url = 'https://forums.whirlpool.net.au/user/%s' % page
     # print(url)
     response = requests.get(url, timeout=5, headers=HEADERS).text

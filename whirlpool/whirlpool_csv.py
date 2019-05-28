@@ -1,15 +1,16 @@
 # -*- coding: utf-8 -*-
-
 import os
+import json
+import csv
+import time
 import urllib
 import requests
 from lxml import html
-import time
-from requests.packages.urllib3.exceptions import InsecureRequestWarning
-from multiprocessing.pool import ThreadPool
-import json
-import csv
 from tqdm import tqdm
+from itertools import cycle
+from get_proxy import get_list
+from multiprocessing.pool import ThreadPool
+from requests.packages.urllib3.exceptions import InsecureRequestWarning
 
 # 禁用安全请求警告
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
@@ -18,13 +19,17 @@ HEADERS = {
     'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.87 Safari/537.36',
 }
 ulist = []
-
+index = 1101
 os.system("clear")
+proxylist = cycle(get_list())
+proxy = next(proxylist)
+print(proxy)
 
-for page in tqdm(range(1000, 1020), desc="Data Store"):
-    url = 'https://forums.whirlpool.net.au/user/%s' % page
+
+def getData(num, port):
+    url = 'https://forums.whirlpool.net.au/user/%s' % num
     # print(url)
-    response = requests.get(url, timeout=5, headers=HEADERS).text
+    response = requests.get(url, timeout=5, headers=HEADERS, proxies={"http": port, "https": port}).text
     selector = html.fromstring(response)
     # print(html.tostring(selector))
     # User Name
@@ -59,6 +64,14 @@ for page in tqdm(range(1000, 1020), desc="Data Store"):
         user.update({tagname: tagdata})
         i += 1
     ulist.append(user)
-# print(ulist)
-with open('data.json', 'w') as outfile:
-    json.dump(ulist, outfile, indent=4, ensure_ascii=False)
+
+    with open('data.json', 'w') as outfile:
+        json.dump(ulist, outfile, indent=4, ensure_ascii=False)
+    outfile.close()
+    time.sleep(0.5)
+
+
+for page in tqdm(range(1000, index), desc="Data Store"):
+    getData(page, proxy)
+    if page % 50 == 0:
+        proxy = next(proxylist)
