@@ -5,8 +5,11 @@ import csv
 import time
 import urllib
 import requests
+import cookielib
 from lxml import html
 from tqdm import tqdm
+from selenium import webdriver
+from time import sleep
 from multiprocessing.pool import ThreadPool
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 
