@@ -3,9 +3,9 @@ import os
 import urllib
 import requests
 from lxml import html
-from requests.packages.urllib3.exceptions import InsecureRequestWarning
-from multiprocessing import Pool
 from tqdm import tqdm
+from multiprocessing import Pool
+from requests.packages.urllib3.exceptions import InsecureRequestWarning
 
 # 禁用安全请求警告
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
